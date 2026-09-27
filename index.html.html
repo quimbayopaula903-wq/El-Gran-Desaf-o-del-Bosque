@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Gran Desafío de Velox y Paciencia - Edición Mágica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF5964;
+            --secondary: #35A7FF;
+            --accent: #FFD166;
+            --success: #06D6A0;
+            --dark: #2B2D42;
+            --light: #F8F9FA;
+            --danger: #EF476F;
+            --owl-bg: #E0F7FA;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #a1c4fd 100%);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        .story-card {
+            width: 100%;
+            max-width: 850px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 35px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            padding: 35px;
+            text-align: center;
+            position: relative;
+            border: 8px solid white;
+            box-sizing: border-box;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .main-header {
+            background: linear-gradient(135deg, var(--primary), #ff758c);
+            color: white;
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(255, 89, 100, 0.4);
+        }
+
+        .main-header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2rem;
+            margin: 0;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+        }
+
+        .main-header p {
+            margin: 5px 0 0 0;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #F1F5F9;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .hearts { color: var(--danger); font-size: 1.2rem; }
+        .level-indicator { background: var(--secondary); color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.9rem; }
+
+        .help-btn {
+            background: var(--accent);
+            border: none;
+            padding: 6px 14px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Fredoka One', cursive;
+            font-size: 0.9rem;
+            color: #7A5C00;
+            box-shadow: 0 3px 0 #d4bc43;
+        }
+        .help-btn:active { transform: translateY(2px); box-shadow: none; }
+
+        .chapter-tag {
+            display: inline-block;
+            background: var(--accent);
+            color: #7A5C00;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-family: 'Fredoka One', cursive;
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .emoji-art { font-size: 4rem; margin: 8px 0; animation: bounce 2s infinite ease-in-out; }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .story-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin: 15px 0;
+            font-weight: 700;
+            color: #4A5568;
+            text-align: justify;
+            max-height: 220px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .decision-box {
+            background: #FFF9E6;
+            border-left: 6px solid var(--accent);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin: 15px 0;
+            color: #5C4300;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .hint-box {
+            background: var(--owl-bg);
+            border-left: 6px solid #00ACC1;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            margin: 10px 0;
+            color: #006064;
+            display: none;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            font-family: 'Fredoka One', cursive;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            font-size: 0.95rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 5px 0 #2082d4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+        }
+
+        .btn:hover { transform: translateY(-2px); background-color: #2395ff; box-shadow: 0 7px 0 #186db4; }
+        .btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #186db4; }
+        .btn-alt { background-color: var(--primary); box-shadow: 0 5px 0 #cc3944; }
+        .btn-alt:hover { background-color: #ff424e; box-shadow: 0 7px 0 #a32b34; }
+        .btn-success { background-color: var(--success); box-shadow: 0 5px 0 #049c73; }
+        .btn-success:hover { background-color: #05b888; box-shadow: 0 7px 0 #037556; }
+    </style>
+</head>
+<body>
+
+    <div class="story-card" id="app"></div>
+
+    <script>
+        let vidas = 3;
+        let historialDecisiones = [];
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            if (type === 'click') {
+                osc.frequency.setValueAtTime(350, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(700, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+            } else if (type === 'hurt') {
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'win') {
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime + 0.15);
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.45);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.45);
+            }
+        }
+
+        const story = {
+            preguntar_cuento: {
+                level: 0, tag: "¡Bienvenido Explorador!", title: "¿Conoces la historia?", emoji: "📖🐰🐢✨",
+                text: "¡Hola! Antes de adentrarnos en esta colorida aventura de 20 niveles en el Bosque del Arroyo Fresco, cuéntanos: ¿Conoces la famosa fábula de 'La liebre y la tortuga'?",
+                hint: "🦉 Búho Sabio: No te preocupes si no la recuerdas; ¡aquí aprenderemos juntos!",
+                question: "❓ ¿Conoces la historia clásica?",
+                options: [
+                    { text: "✨ ¡Sí, la conozco perfectamente!", next: "test_inicial", sound: "win", damage: 0 },
+                    { text: "📚 No la conozco o quiero recordarla", next: "explicacion_cuento", sound: "click", damage: 0 }
+                ]
+            },
+            explicacion_cuento: {
+                level: 0, tag: "Biblioteca del Búho", title: "Resumen de la Fábula", emoji: "📜🌲🐇",
+                text: "Había una vez una liebre muy vanidosa que presumía de su gran velocidad. Cansada de sus burlas, una tortuga lenta pero muy constante la retó a una carrera. La liebre corrió mucho, pero se confió tanto que se quedó dormida bajo un árbol, permitiendo que la tortuga constante cruzara la meta primero.",
+                hint: "🦉 Búho Sabio: ¡Excelente! Ahora ya estás preparado para tomar tus propias decisiones en la aventura.",
+                question: "🚀 ¿Estás listo para iniciar el Test y el Juego?",
+                options: [
+                    { text: "🎯 ¡Sí, empezar Test Inicial!", next: "test_inicial", sound: "win", damage: 0 }
+                ]
+            },
+            test_inicial: {
+                level: 0, tag: "Evaluación Diagnóstica", title: "Test Inicial de Sabiduría", emoji: "📝🦉🧠",
+                text: "El Búho Sabio desea conocer tu opinión antes de arrancar los 20 niveles del desafío en el Bosque del Arroyo Fresco.",
+                hint: "🦉 Búho Sabio: Tus elecciones en el test inicial definen tu estilo de pensamiento.",
+                question: "❓ Pregunta 1: ¿Qué valor crees que es más poderoso para ganar una meta?",
+                options: [
+                    { text: "A) La velocidad explosiva", next: "test_q2", damage: 0 },
+                    { text: "B) La disciplina y constancia", next: "test_q2", damage: 0 },
+                    { text: "C) La suerte y el descanso", next: "test_q2", damage: 0 },
+                    { text: "D) La empatía y el compañerismo", next: "test_q2", damage: 0 }
+                ]
+            },
+            test_q2: {
+                level: 0, tag: "Evaluación Diagnóstica", title: "Test Inicial (Parte 2)", emoji: "🧐🦉✨",
+                text: "Segunda y última pregunta del test diagnóstico:",
+                hint: "🦉 Búho Sabio: ¡Muy bien! Vamos a dar inicio formal al juego.",
+                question: "❓ Pregunta 2: Ante un reto difícil, ¿cómo actúas?",
+                options: [
+                    { text: "A) Me burlo si los demás van lento", next: "inicio_juego", damage: 0 },
+                    { text: "B) Planifico paso a paso con calma", next: "inicio_juego", damage: 0 },
+                    { text: "C) Prefiero dormir y no preocuparme", next: "inicio_juego", damage: 0 },
+                    { text: "D) Pido ayuda y colaboro en equipo", next: "inicio_juego", damage: 0 }
+                ]
+            },
+            inicio_juego: {
+                level: 1, tag: "Nivel 1 de 20", title: "El Reto en el Prado", emoji: "🐇💬🐢",
+                text: "Contexto: Velox presume todo el día de su gran velocidad. Cansada de sus burlas, la tortuga Paciencia la reta a una carrera hasta la Colina de los Girasoles.",
+                hint: "🦉 Búho Sabio: Tienes 4 opciones. 2 son constructivas y 2 conllevan riesgos y pérdida de vidas.",
+                question: "🛤️ Elige tu camino estratégico para el Nivel 1:",
+                options: [
+                    { text: "1. Vía de la Prisa Ciega (Correr sin calentar)", next: "n2_gen", sound: "hurt", damage: 1 },
+                    { text: "2. Vía de la Arrogancia (Burlarse del rival)", next: "n2_gen", sound: "hurt", damage: 1 },
+                    { text: "3. Vía de la Estrategia (Ritmo moderado)", next: "n2_gen", sound: "win", damage: 0 },
+                    { text: "4. Vía de la Empatía (Acuerdo pacífico)", next: "n2_gen", sound: "win", damage: 0 }
+                ]
+            },
+            n2_gen: { level: 2, tag: "Nivel 2 de 20", title: "El Puente Resbaloso", emoji: "🌉💧🪵", text: "Llegas a un arroyo con un puente mojado por la llovizna.", hint: "🦉 Búho Sabio: La precaución evita caídas innecesarias.", question: "🌊 ¿Cómo cruzas?", options: [
+                { text: "1. Cruzar corriendo sin mirar", next: "n3_gen", sound: "hurt", damage: 1 },
+                { text: "2. Saltar arriesgadamente", next: "n3_gen", sound: "hurt", damage: 1 },
+                { text: "3. Caminar con sumo cuidado", next: "n3_gen", sound: "win", damage: 0 },
+                { text: "4. Buscar un vado poco hondo", next: "n3_gen", sound: "win", damage: 0 }
+            ]},
+            n3_gen: { level: 3, tag: "Nivel 3 de 20", title: "El Bosque Umbrío", emoji: "🌲🦉🌑", text: "El sendero se oscurece bajo árboles altos y frondosos.", hint: "🦉 Búho Sabio: Mantén la brújula mental orientada.", question: "🧭 ¿Qué ruta sigues?", options: [
+                { text: "1. Campo traviesa a ciegas", next: "n4_gen", sound: "hurt", damage: 1 },
+                { text: "2. Sentarse a esperar", next: "n4_gen", sound: "hurt", damage: 1 },
+                { text: "3. Seguir el rastro seguro", next: "n4_gen", sound: "win", damage: 0 },
+                { text: "4. Encender una antorcha de ramas", next: "n4_gen", sound: "win", damage: 0 }
+            ]},
+            n4_gen: { level: 4, tag: "Nivel 4 de 20", title: "El Zorro Astuto", emoji: "🦊💬🪵", text: "Un zorro te ofrece un 'atajo mágico' a cambio de una apuesta.", hint: "🦉 Búho Sabio: No todo lo que promete atajos es confiable.", question: "🦊 ¿Qué le respondes?", options: [
+                { text: "1. Aceptar el trato a ciegas", next: "n5_gen", sound: "hurt", damage: 1 },
+                { text: "2. Insultar al zorro y huir", next: "n5_gen", sound: "hurt", damage: 1 },
+                { text: "3. Rechazarlo y seguir la ruta", next: "n5_gen", sound: "win", damage: 0 },
+                { text: "4. Investigar sus intenciones", next: "n5_gen", sound: "win", damage: 0 }
+            ]},
+            n5_gen: { level: 5, tag: "Nivel 5 de 20", title: "La Cuesta Empinada", emoji: "⛰️🪨🧗", text: "Una pendiente rocosa exige esfuerzo físico intenso.", hint: "🦉 Búho Sabio: La montaña se sube con pasos firmes.", question: "🧗 ¿Cómo asciendes?", options: [
+                { text: "1. Trepar con prisa y sin agarre", next: "n6_gen", sound: "hurt", damage: 1 },
+                { text: "2. Rendirse ante el esfuerzo", next: "n6_gen", sound: "hurt", damage: 1 },
+                { text: "3. Apoyarse en rocas estables", next: "n6_gen", sound: "win", damage: 0 },
+                { text: "4. Buscar un rodeo plano", next: "n6_gen", sound: "win", damage: 0 }
+            ]},
+            n6_gen: { level: 6, tag: "Nivel 6 de 20", title: "El Prado de las Flores", emoji: "🌻🐝✨", text: "Un campo lleno de flores doradas emite un aroma dulce que adormece.", hint: "🦉 Búho Sabio: Las distracciones desvían del propósito.", question: "🌸 ¿Qué haces?", options: [
+                { text: "1. Quedarse a dormir oliendo flores", next: "n7_gen", sound: "hurt", damage: 1 },
+                { text: "2. Arrancarlas con afán", next: "n7_gen", sound: "hurt", damage: 1 },
+                { text: "3. Contemplarlas un segundo y seguir", next: "n7_gen", sound: "win", damage: 0 },
+                { text: "4. Tejer una corona y caminar rápido", next: "n7_gen", sound: "win", damage: 0 }
+            ]},
+            n7_gen: { level: 7, tag: "Nivel 7 de 20", title: "La Fiesta en el Camino", emoji: "🦡🎉음", text: "Un grupo de tejones celebra una fiesta e invita a bailar.", hint: "🦉 Búho Sabio: Divertirse es sano, pero hay prioridades.", question: "🥳 ¿Te unes?", options: [
+                { text: "1. Bailar horas olvidando la carrera", next: "n8_gen", sound: "hurt", damage: 1 },
+                { text: "2. Criticar la fiesta con soberbia", next: "n8_gen", sound: "hurt", damage: 1 },
+                { text: "3. Saludarlos y continuar", next: "n8_gen", sound: "win", damage: 0 },
+                { text: "4. Bailar una pieza y despedirse", next: "n8_gen", sound: "win", damage: 0 }
+            ]},
+            n8_gen: { level: 8, tag: "Nivel 8 de 20", title: "El Valle Seco", emoji: "🏜️☀️🥵", text: "El agua es escasa y el calor del valle golpea con dureza.", hint: "🦉 Búho Sabio: La hidratación salva vidas.", question: "💧 ¿Cómo administras tus fuerzas?", options: [
+                { text: "1. Beber toda el agua de golpe", next: "n9_gen", sound: "hurt", damage: 1 },
+                { text: "2. Gritar pidiendo auxilio", next: "n9_gen", sound: "hurt", damage: 1 },
+                { text: "3. Dosificar sorbos y buscar sombra", next: "n9_gen", sound: "win", damage: 0 },
+                { text: "4. Avanzar rápido de sombra en sombra", next: "n9_gen", sound: "win", damage: 0 }
+            ]},
+            n9_gen: { level: 9, tag: "Nivel 9 de 20", title: "El Gran Roble Milenario", emoji: "🌳😴🪵", text: "Mitad del trayecto. El roble ofrece una sombra fresca irresistible.", hint: "🦉 Búho Sabio: Cuidado con la trampa clásica de la siesta.", question: "🛌 ¿Qué decisión tomas?", options: [
+                { text: "1. Dormir siesta profunda y confiada", next: "n10_gen", sound: "hurt", damage: 1 },
+                { text: "2. Roncar vanidosamente", next: "n10_gen", sound: "hurt", damage: 1 },
+                { text: "3. Estirar cinco minutos y seguir", next: "n10_gen", sound: "win", damage: 0 },
+                { text: "4. Invitar a la tortuga a descansar juntas", next: "n10_gen", sound: "win", damage: 0 }
+            ]},
+            n10_gen: { level: 10, tag: "Nivel 10 de 20", title: "El Sendero de Luciérnagas", emoji: "✨🐛🌙", text: "El atardecer llega y miles de luciérnagas iluminan la trocha.", hint: "🦉 Búho Sabio: La noche no detiene al viajero enfocado.", question: "🌙 ¿Cómo sigues?", options: [
+                { text: "1. Tropezar en la oscuridad", next: "n11_gen", sound: "hurt", damage: 1 },
+                { text: "2. Acampar sin terminar la meta", next: "n11_gen", sound: "hurt", damage: 1 },
+                { text: "3. Guiarse con la luz natural", next: "n11_gen", sound: "win", damage: 0 },
+                { text: "4. Avanzar de la pata con la tortuga", next: "n11_gen", sound: "win", damage: 0 }
+            ]},
+            n11_gen: { level: 11, tag: "Nivel 11 de 20", title: "La Laguna Espejo", emoji: "🦆🌊✨", text: "El camino cruza la orilla de una laguna cristalina.", hint: "🦉 Búho Sabio: No te detengas a admirar tu reflejo.", question: "🪞 ¿Qué haces frente al agua?", options: [
+                { text: "1. Mirar reflejo presumiendo pelaje", next: "n12_gen", sound: "hurt", damage: 1 },
+                { text: "2. Intentar nadar sin saber", next: "n12_gen", sound: "hurt", damage: 1 },
+                { text: "3. Saludar a patos y continuar", next: "n12_gen", sound: "win", damage: 0 },
+                { text: "4. Beber agua con calma y seguir", next: "n12_gen", sound: "win", damage: 0 }
+            ]},
+            n12_gen: { level: 12, tag: "Nivel 12 de 20", title: "Terreno Volcánico", emoji: "🌋🪨🔥", text: "Piedras porosas queman las almohadillas de tus patas.", hint: "🦉 Búho Sabio: Busca musgo fresco.", question: "🔥 ¿Cómo superas el calor?", options: [
+                { text: "1. Correr desesperado quemándote", next: "n13_gen", sound: "hurt", damage: 1 },
+                { text: "2. Quejarse sin avanzar", next: "n13_gen", sound: "hurt", damage: 1 },
+                { text: "3. Pisar sobre musgo fresco", next: "n13_gen", sound: "win", damage: 0 },
+                { text: "4. Usar hojas grandes como zapatos", next: "n13_gen", sound: "win", damage: 0 }
+            ]},
+            n13_gen: { level: 13, tag: "Nivel 13 de 20", title: "El Valle de los Ecos", emoji: "🗣️🌫️👻", text: "Un eco distorsionado simula burlas hacia ti.", hint: "🦉 Búho Sabio: Ignora críticas vacías.", question: "🌫️ ¿Cómo reaccionas?", options: [
+                { text: "1. Gritar insultos al vacío", next: "n14_gen", sound: "hurt", damage: 1 },
+                { text: "2. Asustarse y huir al revés", next: "n14_gen", sound: "hurt", damage: 1 },
+                { text: "3. Ignorarlo con silencio concentrado", next: "n14_gen", sound: "win", damage: 0 },
+                { text: "4. Reírte de ti mismo y seguir", next: "n14_gen", sound: "win", damage: 0 }
+            ]},
+            n14_gen: { level: 14, tag: "Nivel 14 de 20", title: "El Laberinto Subterráneo", emoji: "🪵🌿🕳️", text: "Raíces entrelazadas forman una red compleja en el suelo.", hint: "🦉 Búho Sabio: Mira al suelo con atención.", question: "🥾 ¿Cómo cruzas?", options: [
+                { text: "1. Dar saltos ciegos a lo loco", next: "n15_gen", sound: "hurt", damage: 1 },
+                { text: "2. Tropezar y culpar a la suerte", next: "n15_gen", sound: "hurt", damage: 1 },
+                { text: "3. Levantar patas con elegancia", next: "n15_gen", sound: "win", damage: 0 },
+                { text: "4. Seguir el paso lento de la tortuga", next: "n15_gen", sound: "win", damage: 0 }
+            ]},
+            n15_gen: { level: 15, tag: "Nivel 15 de 20", title: "El Ascenso a la Colina", emoji: "🌻⛰️🏃", text: "Comienza la recta final hacia la cumbre.", hint: "🦉 Búho Sabio: El último tramo exige esfuerzo.", question: "🌻 ¿Cómo abordas la falda?", options: [
+                { text: "1. Exprimir reservas sin control", next: "n16_gen", sound: "hurt", damage: 1 },
+                { text: "2. Detenerse a descansar", next: "n16_gen", sound: "hurt", damage: 1 },
+                { text: "3. Mantener trote firme y constante", next: "n16_gen", sound: "win", damage: 0 },
+                { text: "4. Invitar a Paciencia a subir juntas", next: "n16_gen", sound: "win", damage: 0 }
+            ]},
+            n16_gen: { level: 16, tag: "Nivel 16 de 20", title: "La Curva del Viento", emoji: "💨🌻🌪️", text: "Fuertes vientos en la cima intentan desestabilizarte.", hint: "🦉 Búho Sabio: Inclina el cuerpo hacia adelante.", question: "🌬️ ¿Cómo vences la ráfaga?", options: [
+                { text: "1. Luchar de pie con soberbia", next: "n17_gen", sound: "hurt", damage: 1 },
+                { text: "2. Esperar sentado", next: "n17_gen", sound: "hurt", damage: 1 },
+                { text: "3. Agachar el cuerpo y avanzar", next: "n17_gen", sound: "win", damage: 0 },
+                { text: "4. Sujetarse de tallos de girasol", next: "n17_gen", sound: "win", damage: 0 }
+            ]},
+            n17_gen: { level: 17, tag: "Nivel 17 de 20", title: "A Pleno Pulmón", emoji: "🫁🏃🏁", text: "A solo diez metros de la línea de meta.", hint: "🦉 Búho Sabio: No bajes la guardia.", question: "📢 ¿Última acción táctica?", options: [
+                { text: "1. Tropezar por mirar tribuna", next: "n18_gen", sound: "hurt", damage: 1 },
+                { text: "2. Burla final a perdedores", next: "n18_gen", sound: "hurt", damage: 1 },
+                { text: "3. Cruzar con disciplina y respeto", next: "n18_gen", sound: "win", damage: 0 },
+                { text: "4. Esperar a la tortuga para cruzar tomados de la mano", next: "n18_gen", sound: "win", damage: 0 }
+            ]},
+            n18_gen: { level: 18, tag: "Nivel 18 de 20", title: "Evaluación de Obstáculos", emoji: "🧩🦉📋", text: "El Búho Sabio te hace una pregunta de control antes de la meta.", hint: "🦉 Búho Sabio: Recuerda los errores cometidos en el camino.", question: "❓ ¿Cuál fue tu mayor aprendizaje?", options: [
+                { text: "1. Que correr rápido soluciona todo", next: "n19_gen", sound: "hurt", damage: 1 },
+                { text: "2. Que dormir es mejor que competir", next: "n19_gen", sound: "hurt", damage: 1 },
+                { text: "3. Que la constancia y el respeto superan la vanidad", next: "n19_gen", sound: "win", damage: 0 },
+                { text: "4. Que la colaboración enriquece el logro", next: "n19_gen", sound: "win", damage: 0 }
+            ]},
+            n19_gen: { level: 19, tag: "Nivel 19 de 20", title: "La Línea de Llegada", emoji: "🏆🎉🌻", text: "Has atravesado los 19 niveles previos sorteando decisiones y aprendizajes.", hint: "🦉 Búho Sabio: ¡Pulsa para generar tu reporte final!", question: "🌟 ¡Generar reporte pedagógico!", options: [
+                { text: "📊 Ver mi reporte de reflexión y aprendizaje", next: "pantalla_reflexion", sound: "win", damage: 0 }
+            ]},
+            pantalla_reflexion: {
+                level: 20, tag: "Nivel 20 de 20: Reflexión Final", title: "Reporte de Conciencia del Explorador", emoji: "📜🦉🎓",
+                text: "¡Felicidades por completar los 20 niveles! Tus decisiones reflejaron tu estilo de aprendizaje. La constancia, el respeto y la disciplina siempre superan a la vanidad.",
+                hint: "🦉 Búho Sabio: ¡Has completado la travesía magistralmente!",
+                question: "🔄 ¿Deseas reiniciar esta experiencia interactiva?",
+                options: [
+                    { text: "❤️ Reiniciar la aventura desde el Test Inicial", next: "reiniciar", sound: "win", damage: 0 }
+                ]
+            },
+            game_over: {
+                level: 20, tag: "¡Juego Terminado!", title: "Te has quedado sin vidas", emoji: "💀💔🌲",
+                text: "Tus decisiones basadas en la prisa, la soberbia o el descuido extremo agotaron tus 3 corazones. La constancia y la prudencia son indispensables.",
+                hint: "🦉 Búho Sabio: Analiza las pistas en cada nivel.",
+                question: "🔄 ¿Deseas reintentar el recorrido completo?",
+                options: [
+                    { text: "❤️ Reintentar desde el Test Inicial", next: "reiniciar", sound: "click", damage: 0 }
+                ]
+            }
+        };
+
+        function toggleHint() {
+            const hintBox = document.getElementById('hint-box');
+            hintBox.style.display = hintBox.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function renderScene(sceneKey, damage = 0) {
+            if (sceneKey === 'reiniciar') {
+                vidas = 3;
+                historialDecisiones = [];
+                renderScene('preguntar_cuento', 0);
+                return;
+            }
+
+            vidas -= damage;
+            if (vidas <= 0) {
+                sceneKey = 'game_over';
+                vidas = 0;
+            }
+
+            const scene = story[sceneKey];
+            const app = document.getElementById('app');
+
+            if(scene.level > 0 && sceneKey !== 'pantalla_reflexion' && sceneKey !== 'game_over') {
+                historialDecisiones.push(`Nivel ${scene.level}: ${scene.title}`);
+            }
+
+            let heartsHTML = '❤️'.repeat(vidas) + '🤍'.repeat(3 - vidas);
+
+            let buttonsHTML = '';
+            scene.options.forEach(opt => {
+                let btnClass = 'btn ' + (opt.style || '');
+                buttonsHTML += `<button class="${btnClass}" onclick="playSound('${opt.sound || 'click'}'); renderScene('${opt.next}', ${opt.damage || 0})">${opt.text}</button>`;
+            });
+
+            let textoExtra = scene.text;
+            if(sceneKey === 'pantalla_reflexion') {
+                textoExtra += `<br><br><b>Tus decisiones en el camino (${historialDecisiones.length} elecciones):</b><br>` + historialDecisiones.slice(-6).join(' ➔ ');
+            }
+
+            let hudHTML = '';
+            if(scene.level > 0) {
+                hudHTML = `
+                    <div class="hud">
+                        <div class="hearts">Vidas: ${heartsHTML}</div>
+                        <div class="level-indicator">Nivel ${scene.level} / 20</div>
+                        <button class="help-btn" onclick="toggleHint()">🦉 Ayuda del Búho</button>
+                    </div>
+                `;
+            }
+
+            app.innerHTML = `
+                <div class="main-header">
+                    <h1>El Gran Desafío del Bosque</h1>
+                    <p>Aventura Interactiva de la Liebre y la Tortuga</p>
+                </div>
+                ${hudHTML}
+                <div class="chapter-tag">${scene.tag}</div>
+                <h2>${scene.title}</h2>
+                <div class="emoji-art">${scene.emoji}</div>
+                <div class="story-text">${textoExtra}</div>
+                <div class="hint-box" id="hint-box">${scene.hint}</div>
+                <div class="decision-box">${scene.question}</div>
+                <div class="btn-grid">
+                    ${buttonsHTML}
+                </div>
+            `;
+        }
+
+        renderScene('preguntar_cuento', 0);
+    </script>
+</body>
+</html>
